@@ -1,0 +1,7 @@
+# Parámetros del instrumento de carga (Google Forms / export ancho)
+n_objetivos_generales: 6
+# OG donde el CSV por unidad puede no traer columna "Actividades"
+actividades_columna_opcional_og: [6]
+origen_forms: "google_forms"
+origen_app: "app_carga_directa"
+origen_csv_import: "csv_import"
