@@ -9,7 +9,6 @@ import pandas as pd
 import streamlit as st
 
 from pei_gestion import analytics, followup, ingestion, ml_analytics, plan_assist, reports, snapshots, topics, validation
-from pei_gestion.column_labels import dataframe_for_display
 from pei_gestion.activity_entry import entries_to_dataframe, entry_row, merge_with_forms
 from pei_gestion.banner import render_banner
 from pei_gestion.canonical_plan import list_oe_for_og
@@ -206,17 +205,17 @@ with tab_res:
         c1, c2 = st.columns(2)
         with c1:
             st.caption("Por **unidad** y **año**: cuántas actividades se registraron.")
-            st.dataframe(dataframe_for_display(followup.summary_by_unit_year(ldf)), use_container_width=True)
+            st.dataframe(analytics.dataframe_for_display(followup.summary_by_unit_year(ldf)), use_container_width=True)
         with c2:
             st.caption(
                 "Por **objetivo general** (1–6): cuántas actividades se declararon en cada OG (suma todas las unidades)."
             )
-            st.dataframe(dataframe_for_display(followup.summary_by_og(ldf)), use_container_width=True)
+            st.dataframe(analytics.dataframe_for_display(followup.summary_by_og(ldf)), use_container_width=True)
         st.caption("Por **unidad** y **objetivo general** a la vez (misma actividad cuenta en una sola celda).")
-        st.dataframe(dataframe_for_display(followup.summary_by_unit_og(ldf)), use_container_width=True)
+        st.dataframe(analytics.dataframe_for_display(followup.summary_by_unit_og(ldf)), use_container_width=True)
         st.markdown("#### Completitud de campos (por bloque)")
         st.caption("Cada fila: un bloque OG; columnas «Falta…» indican si falta texto en ese campo.")
-        st.dataframe(dataframe_for_display(followup.completeness_flags(ldf).head(500)), use_container_width=True)
+        st.dataframe(analytics.dataframe_for_display(followup.completeness_flags(ldf).head(500)), use_container_width=True)
 
 with tab_consist:
     if ldf is None:
@@ -263,7 +262,7 @@ with tab_consist:
             )
         with s2:
             st.dataframe(
-                dataframe_for_display(followup.layer_b_oe_matrix(CANONICAL, val)),
+                analytics.dataframe_for_display(followup.layer_b_oe_matrix(CANONICAL, val)),
                 use_container_width=True,
                 height=380,
             )
@@ -277,7 +276,7 @@ with tab_consist:
         with s4:
             st.caption(CAPTION_TABLA_ACTIVIDADES)
             st.dataframe(
-                dataframe_for_display(val.head(400)),
+                analytics.dataframe_for_display(val.head(400)),
                 use_container_width=True,
                 hide_index=True,
             )
@@ -343,7 +342,7 @@ with tab_cuanti:
         with q2:
             st.caption(CAPTION_TABLA_ACTIVIDADES)
             st.dataframe(
-                dataframe_for_display(filt),
+                analytics.dataframe_for_display(filt),
                 use_container_width=True,
                 height=420,
                 hide_index=True,
@@ -403,7 +402,7 @@ with tab_cuali:
             pol = ml_analytics.add_polarity_column(ldf)
             st.caption("Léxico reducido en español; no es un modelo de lenguaje completo.")
             st.dataframe(
-                dataframe_for_display(
+                analytics.dataframe_for_display(
                     pol[["unidad", "anio", "polaridad_lexica", "actividad", "resultado"]].head(200)
                 ),
                 use_container_width=True,
@@ -485,7 +484,7 @@ with tab_entry:
     edf = entries_to_dataframe(st.session_state.app_entry_rows)
     if not edf.empty:
         st.caption(CAPTION_TABLA_ACTIVIDADES)
-        st.dataframe(dataframe_for_display(edf), use_container_width=True, hide_index=True)
+        st.dataframe(analytics.dataframe_for_display(edf), use_container_width=True, hide_index=True)
         st.download_button(
             "Descargar entradas sesión (CSV)",
             edf.to_csv(index=False).encode("utf-8"),
