@@ -15,6 +15,14 @@ def summary_by_unit_year(long_df: pd.DataFrame) -> pd.DataFrame:
     return g.sort_values(["anio", "unidad"])
 
 
+def summary_by_year(long_df: pd.DataFrame) -> pd.DataFrame:
+    """Total de filas-actividad por año (suma todas las unidades)."""
+    if long_df.empty or "anio" not in long_df.columns:
+        return long_df
+    g = long_df.groupby("anio", dropna=False).size().reset_index(name="n_actividades")
+    return g.sort_values("anio")
+
+
 def summary_by_og(long_df: pd.DataFrame) -> pd.DataFrame:
     if long_df.empty:
         return long_df
