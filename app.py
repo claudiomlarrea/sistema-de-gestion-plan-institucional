@@ -9,7 +9,7 @@ import pandas as pd
 import streamlit as st
 
 from pei_gestion import analytics, followup, ingestion, ml_analytics, plan_assist, reports, snapshots, topics, validation
-from pei_gestion.activity_entry import entries_to_dataframe, entry_row, merge_with_forms
+from pei_gestion.activity_entry import entries_to_dataframe, entry_row, merge_with_forms, sheet_dataframe_to_entry_rows
 from pei_gestion.banner import render_banner
 from pei_gestion.canonical_plan import (
     find_oe_by_id,
@@ -153,9 +153,30 @@ with st.sidebar:
         except Exception as e:
             st.exception(e)
 
-    st.subheader("Carga directa (memoria de sesión)")
-    st.caption("Las filas se fusionan al consolidado hasta recargar la página.")
-    if st.button("Vaciar entradas manuales"):
+    st.subheader("Carga directa (memoria + Google Sheets)")
+    st.caption(
+        "Las filas se fusionan al consolidado. Si tenés **Secrets** con la misma cuenta que lee el formulario, "
+        "cada «Agregar a la sesión» también **appendea** la fila en la pestaña **Actividades_app** del mismo spreadsheet. "
+        "Tras recargar la página, pulsá **Traer desde hoja Actividades_app** para volver a cargar lo guardado."
+    )
+    if st.button("Traer desde hoja Actividades_app (Google)"):
+        try:
+            from pei_gestion import sheets_ingestion
+
+            df_app = sheets_ingestion.load_actividades_app_dataframe(st.secrets)
+            pulled = sheet_dataframe_to_entry_rows(df_app)
+            by_id = {str(r.get("respuesta_id", "")): r for r in pulled if r.get("respuesta_id")}
+            for r in st.session_state.app_entry_rows:
+                rid = str(r.get("respuesta_id", ""))
+                if rid:
+                    by_id[rid] = r
+            st.session_state.app_entry_rows = list(by_id.values())
+            st.success(f"Carga directa en sesión: {len(st.session_state.app_entry_rows)} filas (hoja + memoria unificadas por ID).")
+        except FileNotFoundError:
+            st.info("No hay `secrets.toml` local: en Streamlit Cloud configurá Secrets con `google_service_account` y `sheets`.")
+        except Exception as e:
+            st.error(f"No se pudo leer Actividades_app: {e}")
+    if st.button("Vaciar entradas manuales (solo memoria)"):
         st.session_state.app_entry_rows = []
         st.success("Listo.")
 
@@ -571,7 +592,20 @@ with tab_entry:
             indicador_id=ind_id_val,
         )
         st.session_state.app_entry_rows.append(row)
-        st.success(f"Filas en sesión: {len(st.session_state.app_entry_rows)}")
+        persisted = False
+        try:
+            from pei_gestion import sheets_ingestion
+
+            sheets_ingestion.append_actividad_app_row(st.secrets, row)
+            persisted = True
+        except FileNotFoundError:
+            pass
+        except Exception as ex:
+            st.warning(f"Quedó en **memoria de sesión**; no se pudo escribir en Google Sheets: {ex}")
+        msg = f"Filas en sesión: {len(st.session_state.app_entry_rows)}"
+        if persisted:
+            msg += " · **Persistido** en la pestaña **Actividades_app** del spreadsheet."
+        st.success(msg)
 
     edf = entries_to_dataframe(st.session_state.app_entry_rows)
     if not edf.empty:
