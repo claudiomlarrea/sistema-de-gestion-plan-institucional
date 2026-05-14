@@ -11,7 +11,13 @@ import streamlit as st
 from pei_gestion import analytics, followup, ingestion, ml_analytics, plan_assist, reports, snapshots, topics, validation
 from pei_gestion.activity_entry import entries_to_dataframe, entry_row, merge_with_forms
 from pei_gestion.banner import render_banner
-from pei_gestion.canonical_plan import list_oe_for_og
+from pei_gestion.canonical_plan import (
+    find_oe_by_id,
+    list_acciones,
+    list_indicadores,
+    list_oe_for_og,
+    plan_with_merged_acciones,
+)
 from pei_gestion.config_loader import load_plan_bundle, project_root
 
 st.set_page_config(page_title="PEI UCCuyo", layout="wide", initial_sidebar_state="expanded")
@@ -65,6 +71,16 @@ def _og_opciones_selectbox(meta: dict) -> list[str]:
 def _og_num_desde_etiqueta_select(label: str) -> int:
     m = re.match(r"^\s*(\d+)\.", str(label).strip())
     return int(m.group(1)) if m else 1
+
+
+def _split_id_denominacion(s: str, sep: str = " | ") -> tuple[str, str]:
+    if not s or not str(s).strip():
+        return "", ""
+    t = str(s).strip()
+    if sep in t:
+        a, b = t.split(sep, 1)
+        return a.strip(), b.strip()
+    return t, ""
 
 
 def display_long_df() -> pd.DataFrame | None:
@@ -440,7 +456,13 @@ with tab_cuali:
 
 with tab_entry:
     st.markdown("### Registro alternativo al Google Forms")
-    st.caption("Vinculación OG → OE según `config/plan_2023_2027.yaml`. Acción/indicador: texto libre si aún no hay catálogo.")
+    st.caption(
+        "Elegís **unidad, año** y la ubicación en el plan (**OG → OE → acción → indicador**) desde listas del "
+        "**plan canónico** y el archivo **`config/plan_acciones_overrides.yaml`**. "
+        "Solo escribís **actividad, detalle, resultado** y **correo**."
+    )
+    plan_entry = plan_with_merged_acciones(CANONICAL)
+
     unidades_cfg = validation.load_units_config().get("unidades_observadas") or []
     if unidades_cfg:
         u_pick = st.selectbox("Unidad Académica", options=unidades_cfg, key="entry_unidad")
@@ -452,7 +474,9 @@ with tab_entry:
         options=META.get("years_valid", [2023, 2024, 2025, 2026, 2027]),
         key="entry_anio",
     )
-    st.caption("Objetivos generales según **config/plan_meta.yaml** (Plan estratégico institucional).")
+
+    st.markdown("#### Ubicación en el Plan Estratégico")
+    st.caption("Objetivos generales: **config/plan_meta.yaml**.")
     og_etiquetas = _og_opciones_selectbox(META)
     og_sel = st.selectbox(
         "Objetivo general",
@@ -460,21 +484,76 @@ with tab_entry:
         key="entry_og_label",
     )
     og_n = _og_num_desde_etiqueta_select(og_sel)
-    oes = list_oe_for_og(CANONICAL, int(og_n)) if CANONICAL else []
-    if oes:
-        oe_labels = [f"{o.get('id', '')} — {str(o.get('texto', ''))[:90]}" for o in oes]
-        oe_i = st.selectbox("Objetivo específico", list(range(len(oes))), format_func=lambda i: oe_labels[i])
-        oe_txt = str(oes[oe_i].get("texto", ""))
-    else:
-        oe_txt = st.text_input("Texto OE (sin catálogo YAML)", value="")
-    acc_txt = st.text_input("Acción (opcional / libre)", value="")
-    ind_txt = st.text_input("Indicador (opcional / libre)", value="")
-    act = st.text_input("Actividad (≤10 palabras recomendado)", value="")
-    det = st.text_input("Detalle (≤20 palabras recomendado)", value="")
-    res = st.text_input("Resultado", value="")
-    email = st.text_input("Correo institucional", value="")
 
-    if st.button("Agregar a la sesión"):
+    oes = list_oe_for_og(plan_entry, int(og_n)) if plan_entry else []
+    oe_txt = ""
+    oe_id_val = ""
+    oe_obj = None
+    if oes:
+        oe_options = [f"{str(o.get('id', '')).strip()} | {str(o.get('texto', '')).strip()}" for o in oes]
+        st.caption("Objetivos específicos: **config/plan_2023_2027.yaml** (texto alineado al formulario).")
+        oe_choice = st.selectbox(
+            "Objetivo específico",
+            options=oe_options,
+            key=f"entry_oe_sel_{og_n}",
+        )
+        oe_id_val, _rest = _split_id_denominacion(oe_choice)
+        oe_obj = find_oe_by_id(plan_entry, int(og_n), oe_id_val) if oe_id_val else None
+        oe_txt = str(oe_obj.get("texto", "")).strip() if oe_obj else ""
+    else:
+        st.warning("No hay objetivos específicos en el plan para este OG.")
+
+    acciones = list_acciones(oe_obj) if oe_obj else []
+    acc_obj = None
+    acc_txt = ""
+    acc_id_val = ""
+    ind_txt = ""
+    ind_id_val = ""
+    puede_cargar = bool(oe_obj and acciones)
+
+    if oe_obj and not acciones:
+        st.warning(
+            "Este objetivo específico **no tiene acciones cargadas** en el plan fusionado "
+            "(`plan_2023_2027.yaml` + `plan_acciones_overrides.yaml`). "
+            "Agregá el bloque `por_oe` para su **id** de OE en `config/plan_acciones_overrides.yaml`."
+        )
+
+    if acciones:
+        acc_options = [f"{str(a.get('id', '')).strip()} | {str(a.get('texto', '')).strip()}" for a in acciones]
+        st.caption("Acciones e indicadores según catálogo cargado en YAML (complemento del plan).")
+        acc_choice = st.selectbox(
+            "Acción del plan",
+            options=acc_options,
+            key=f"entry_acc_sel_{og_n}_{oe_id_val or '_'}",
+        )
+        acc_id_val, _ = _split_id_denominacion(acc_choice)
+        acc_obj = next((a for a in acciones if str(a.get("id", "")).strip() == acc_id_val), None)
+        acc_txt = str(acc_obj.get("texto", "")).strip() if acc_obj else ""
+
+    indicadores = list_indicadores(acc_obj) if acc_obj else []
+    if acc_obj:
+        if not indicadores:
+            ind_txt = ""
+            ind_id_val = ""
+            st.caption("La acción seleccionada no define indicadores en el YAML; el indicador quedará vacío.")
+        else:
+            ind_options = [f"{str(i.get('id', '')).strip()} | {str(i.get('texto', '')).strip()}" for i in indicadores]
+            ind_choice = st.selectbox(
+                "Indicador del plan",
+                options=ind_options,
+                key=f"entry_ind_sel_{og_n}_{oe_id_val or '_'}_{acc_id_val or '_'}",
+            )
+            ind_id_val, _ = _split_id_denominacion(ind_choice)
+            ind_obj = next((x for x in indicadores if str(x.get("id", "")).strip() == ind_id_val), None)
+            ind_txt = str(ind_obj.get("texto", "")).strip() if ind_obj else ""
+
+    st.markdown("#### Lo que completás vos (evidencia de la actividad)")
+    act = st.text_input("1. Actividad (≤10 palabras recomendado)", value="", key="entry_actividad")
+    det = st.text_input("2. Detalle (≤20 palabras recomendado)", value="", key="entry_detalle")
+    res = st.text_input("3. Resultado", value="", key="entry_resultado")
+    email = st.text_input("4. Correo institucional", value="", key="entry_email")
+
+    if st.button("Agregar a la sesión", disabled=not puede_cargar):
         row = entry_row(
             unidad=u_pick,
             anio=int(anio),
@@ -487,6 +566,9 @@ with tab_entry:
             indicador=ind_txt,
             email=email,
             cargado_por=email,
+            oe_id=oe_id_val,
+            accion_id=acc_id_val,
+            indicador_id=ind_id_val,
         )
         st.session_state.app_entry_rows.append(row)
         st.success(f"Filas en sesión: {len(st.session_state.app_entry_rows)}")
