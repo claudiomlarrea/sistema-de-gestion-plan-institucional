@@ -1,6 +1,7 @@
 """Carga del plan canónico (OG → OE → acciones → indicadores) desde YAML versionado."""
 from __future__ import annotations
 
+import copy
 import pathlib
 from typing import Any, Optional
 
@@ -45,6 +46,44 @@ def find_oe_by_text(plan: dict[str, Any], og_num: int, texto: str) -> Optional[d
         if (oe.get("texto") or "").strip() == t:
             return oe
     return None
+
+
+def find_oe_by_id(plan: dict[str, Any], og_num: int, oe_id: str) -> Optional[dict[str, Any]]:
+    oid = (oe_id or "").strip()
+    for oe in list_oe_for_og(plan, og_num):
+        if str(oe.get("id", "")).strip() == oid:
+            return oe
+    return None
+
+
+def acciones_overrides_path() -> pathlib.Path:
+    return project_root() / "config" / "plan_acciones_overrides.yaml"
+
+
+def load_acciones_overrides(path: Optional[pathlib.Path] = None) -> dict[str, Any]:
+    """YAML opcional con clave `por_oe`: { OE_ID: [ { id, texto, indicadores: [...] }, ... ] }."""
+    p = path or acciones_overrides_path()
+    if not p.is_file():
+        return {}
+    with p.open(encoding="utf-8") as f:
+        raw = yaml.safe_load(f) or {}
+    return raw if isinstance(raw, dict) else {}
+
+
+def plan_with_merged_acciones(plan: dict[str, Any], overrides: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    """Copia profunda del plan; sustituye `acciones` de cada OE si hay entrada en overrides."""
+    out = copy.deepcopy(plan)
+    ov = overrides if overrides is not None else load_acciones_overrides()
+    if not ov:
+        return out
+    por_oe = ov.get("por_oe") if isinstance(ov.get("por_oe"), dict) else ov
+    for og in iter_og(out):
+        for oe in og.get("objetivos_especificos") or []:
+            oid = str(oe.get("id", ""))
+            block = por_oe.get(oid)
+            if isinstance(block, list) and len(block) > 0:
+                oe["acciones"] = copy.deepcopy(block)
+    return out
 
 
 def list_acciones(oe: dict[str, Any]) -> list[dict[str, Any]]:
