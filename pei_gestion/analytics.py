@@ -82,6 +82,9 @@ DISPLAY_COLUMN_LABELS_ES: dict[str, str] = {
     "n_forms": "Actividades desde formulario",
     "n_app": "Actividades desde app",
     "nota": "Nota",
+    "oe_id": "Código OE (plan)",
+    "accion_id": "Código acción (plan)",
+    "indicador_id": "Código indicador (plan)",
 }
 
 

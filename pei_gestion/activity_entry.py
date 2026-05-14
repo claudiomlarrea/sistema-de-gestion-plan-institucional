@@ -21,9 +21,12 @@ def entry_row(
     indicador: str = "",
     email: str = "",
     cargado_por: str = "",
+    oe_id: str = "",
+    accion_id: str = "",
+    indicador_id: str = "",
 ) -> dict[str, Any]:
     now = dt.datetime.now()
-    return {
+    row: dict[str, Any] = {
         "respuesta_id": f"app-{uuid.uuid4().hex[:12]}",
         "fecha_carga": now,
         "created_at": now,
@@ -42,6 +45,13 @@ def entry_row(
         "hoja": "activity_entry",
         "puntuacion": None,
     }
+    if oe_id.strip():
+        row["oe_id"] = oe_id.strip()
+    if accion_id.strip():
+        row["accion_id"] = accion_id.strip()
+    if indicador_id.strip():
+        row["indicador_id"] = indicador_id.strip()
+    return row
 
 
 def entries_to_dataframe(rows: list[dict[str, Any]]) -> pd.DataFrame:
