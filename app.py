@@ -202,6 +202,16 @@ with tab_res:
             "Cada **actividad** es una fila del consolidado (texto declarado por unidad en un objetivo general y específico). "
             "Los números **no** son usuarios ni envíos únicos del formulario: son actividades cargadas."
         )
+        st.markdown("##### Total de actividades por año")
+        st.caption("**Sumatoria** de todas las unidades: una sola fila por año.")
+        tot_anual = followup.summary_by_year(ldf)
+        st.dataframe(
+            analytics.dataframe_for_display(tot_anual),
+            use_container_width=True,
+            hide_index=True,
+        )
+        if not tot_anual.empty and "n_actividades" in tot_anual.columns:
+            st.bar_chart(tot_anual.set_index("anio")["n_actividades"])
         c1, c2 = st.columns(2)
         with c1:
             st.caption("Por **unidad** y **año**: cuántas actividades se registraron.")
