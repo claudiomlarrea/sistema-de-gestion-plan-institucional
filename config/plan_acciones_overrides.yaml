@@ -1,0 +1,281 @@
+# Complemento del plan canónico (`plan_2023_2027.yaml`): acciones e indicadores por OE.
+# La app de «Carga directa» fusiona esto en memoria para armar los desplegables.
+# Podés ampliar o corregir textos según el documento oficial del PEI.
+por_oe:
+  OG1-OE01:
+    - id: OG1-OE01-A01
+      texto: "Realizar un análisis de las diferentes áreas y funciones dentro de la universidad para identificar a los posibles referentes."
+      indicadores:
+        - id: OG1-OE01-A01-I01
+          texto: "Número de Áreas y Funciones Analizadas"
+    - id: OG1-OE01-A02
+      texto: "Diseñar un programa de capacitación que cubra fundamentos del aseguramiento de la calidad, herramientas y mejores prácticas."
+      indicadores:
+        - id: OG1-OE01-A02-I01
+          texto: "Porcentaje de Contenidos Cubiertos en el Programa de Capacitación"
+    - id: OG1-OE01-A03
+      texto: "Establecer un comité o grupo de trabajo dentro del equipo de referentes para el diseño del sistema, por áreas."
+      indicadores:
+        - id: OG1-OE01-A03-I01
+          texto: "Conformación del Comité"
+  OG1-OE02:
+    - id: OG1-OE02-A01
+      texto: "Investigar mejores prácticas nacionales e internacionales en criterios de calidad en funciones universitarias."
+      indicadores:
+        - id: OG1-OE02-A01-I01
+          texto: "Número de Áreas y Funciones analizadas en la investigación"
+    - id: OG1-OE02-A02
+      texto: "Crear grupos de trabajo multidisciplinarios para elaborar criterios de calidad por función."
+      indicadores:
+        - id: OG1-OE02-A02-I01
+          texto: "Grupos de trabajo constituidos y actas de avance"
+    - id: OG1-OE02-A03
+      texto: "Organizar sesiones de socialización y capacitación sobre los nuevos criterios."
+      indicadores:
+        - id: OG1-OE02-A03-I01
+          texto: "Porcentaje de asistencia / participación en sesiones"
+  OG1-OE03:
+    - id: OG1-OE03-A01
+      texto: "Desarrollar protocolos y herramientas de evaluación interna (encuestas, entrevistas, análisis de datos)."
+      indicadores:
+        - id: OG1-OE03-A01-I01
+          texto: "Número de herramientas y métodos planificados para la evaluación interna"
+    - id: OG1-OE03-A02
+      texto: "Identificar y seleccionar entidades externas para evaluación de calidad."
+      indicadores:
+        - id: OG1-OE03-A02-I01
+          texto: "Entidades u organizaciones externas investigadas y evaluadas"
+  OG1-OE04:
+    - id: OG1-OE04-A01
+      texto: "Revisar resultados de evaluaciones de cátedra y de institucionales para retroalimentación."
+      indicadores:
+        - id: OG1-OE04-A01-I01
+          texto: "Evaluaciones de cátedra procesadas y informadas"
+  OG1-OE05:
+    - id: OG1-OE05-A01
+      texto: "Promover cultura de calidad y mejoramiento continuo en toda la comunidad universitaria."
+      indicadores:
+        - id: OG1-OE05-A01-I01
+          texto: "Porcentaje de participación en capacitaciones sobre calidad institucional"
+  OG1-OE06:
+    - id: OG1-OE06-A01
+      texto: "Desarrollar planes de mejora con acciones concretas a partir de evaluaciones y retroalimentación."
+      indicadores:
+        - id: OG1-OE06-A01-I01
+          texto: "Planes de mejora aprobados e implementados (seguimiento)"
+  OG1-OE07:
+    - id: OG1-OE07-A01
+      texto: "Implementar herramientas digitales de monitoreo y revisiones periódicas de progreso."
+      indicadores:
+        - id: OG1-OE07-A01-I01
+          texto: "Proporción de acciones monitoreadas en tiempo real"
+  OG1-OE08:
+    - id: OG1-OE08-A01
+      texto: "Implementar portal de transparencia y asambleas informativas periódicas."
+      indicadores:
+        - id: OG1-OE08-A01-I01
+          texto: "Proporción de documentos publicados vs. total previsto"
+  OG2-OE01:
+    - id: OG2-OE01-A01
+      texto: "Analizar convenios existentes y formalizar nuevos; consolidar presencia en redes (RADU, RUC, REALCUP)."
+      indicadores:
+        - id: OG2-OE01-A01-I01
+          texto: "Cantidad de acuerdos formales de colaboración con empresas, gobiernos locales y ONGs"
+  OG2-OE02:
+    - id: OG2-OE02-A01
+      texto: "Fortalecer participación en ferias, exposiciones y eventos académicos regionales y nacionales."
+      indicadores:
+        - id: OG2-OE02-A01-I01
+          texto: "Cantidad de eventos académicos en los que participó la UCCuyo"
+  OG2-OE03:
+    - id: OG2-OE03-A01
+      texto: "Desarrollar Plan de Comunicación interna y externa con enfoque integral."
+      indicadores:
+        - id: OG2-OE03-A01-I01
+          texto: "Plan aprobado y cronograma de implementación"
+  OG2-OE04:
+    - id: OG2-OE04-A01
+      texto: "Recuperar instancias tipo «Diálogos» como espacio de participación institucional."
+      indicadores:
+        - id: OG2-OE04-A01-I01
+          texto: "Número de foros / grupos de discusión realizados"
+  OG2-OE05:
+    - id: OG2-OE05-A01
+      texto: "Actualizar sitio web e intranet / canales para información institucional."
+      indicadores:
+        - id: OG2-OE05-A01-I01
+          texto: "Número de visitas a la plataforma / mails institucionales cursados"
+  OG2-OE06:
+    - id: OG2-OE06-A01
+      texto: "Promover Voluntariado, Prácticas de Compromiso Social y CVC Rivadavia."
+      indicadores:
+        - id: OG2-OE06-A01-I01
+          texto: "Número de personas o comunidades impactadas por proyectos de RSU"
+  OG2-OE07:
+    - id: OG2-OE07-A01
+      texto: "Vincular Centro de Graduados y colegios profesionales para educación continua."
+      indicadores:
+        - id: OG2-OE07-A01-I01
+          texto: "Número de formaciones organizadas y personas certificadas"
+  OG2-OE08:
+    - id: OG2-OE08-A01
+      texto: "Proyecto de extensión con talleres en territorio para vinculación con nivel secundario."
+      indicadores:
+        - id: OG2-OE08-A01-I01
+          texto: "Cantidad de alumnos inscriptos del interior (San Juan, San Luis, Rodeo del Medio)"
+  OG3-OE01:
+    - id: OG3-OE01-A01
+      texto: "Sistematizar encuestas y FODA del SIED con conclusiones y plan de acción."
+      indicadores:
+        - id: OG3-OE01-A01-I01
+          texto: "Porcentaje de recomendaciones del FODA implementadas"
+  OG3-OE02:
+    - id: OG3-OE02-A01
+      texto: "Revisión periódica de objetivos del SIED alineados a la visión institucional."
+      indicadores:
+        - id: OG3-OE02-A01-I01
+          texto: "Cantidad de objetivos específicos definidos y revisados por ciclo"
+  OG3-OE03:
+    - id: OG3-OE03-A01
+      texto: "Grupos de trabajo para lectura, análisis y adecuación de políticas y normativas EaD."
+      indicadores:
+        - id: OG3-OE03-A01-I01
+          texto: "Informes periódicos y nueva normativa aprobada"
+  OG3-OE04:
+    - id: OG3-OE04-A01
+      texto: "Ampliar repertorio de recursos educativos en línea para experiencias de aprendizaje."
+      indicadores:
+        - id: OG3-OE04-A01-I01
+          texto: "Porcentaje de impacto percibido (encuestas docentes/alumnos)"
+  OG3-OE05:
+    - id: OG3-OE05-A01
+      texto: "Cursos, jornadas y talleres de capacitación docente en virtualidad."
+      indicadores:
+        - id: OG3-OE05-A01-I01
+          texto: "Cantidad de docentes capacitados y nivel de competencias adquiridas"
+  OG3-OE06:
+    - id: OG3-OE06-A01
+      texto: "Adquisición y seguimiento de recursos tecnológicos para entorno virtual."
+      indicadores:
+        - id: OG3-OE06-A01-I01
+          texto: "Registro de cambios tecnológicos y su impacto áulico"
+  OG3-OE07:
+    - id: OG3-OE07-A01
+      texto: "Canales de comunicación para orientación y asesoramiento a estudiantes EaD."
+      indicadores:
+        - id: OG3-OE07-A01-I01
+          texto: "Consultas registradas (administrativas vs. académicas)"
+  OG3-OE08:
+    - id: OG3-OE08-A01
+      texto: "Campañas de difusión multicanal de la oferta académica a distancia."
+      indicadores:
+        - id: OG3-OE08-A01-I01
+          texto: "Medio de conocimiento de la oferta (inscripción) — % por canal"
+  OG3-OE09:
+    - id: OG3-OE09-A01
+      texto: "Convenios marco de cooperación con instituciones para enriquecer la oferta EaD."
+      indicadores:
+        - id: OG3-OE09-A01-I01
+          texto: "Cantidad de convenios celebrados y actualizados"
+  OG4-OE01:
+    - id: OG4-OE01-A01
+      texto: "Reuniones y talleres para análisis de perfiles y competencias requeridas."
+      indicadores:
+        - id: OG4-OE01-A01-I01
+          texto: "Cantidad de perfiles relevados y concursos sustanciados"
+  OG4-OE02:
+    - id: OG4-OE02-A01
+      texto: "Campañas multicanal y sesiones informativas sobre política de RR.HH."
+      indicadores:
+        - id: OG4-OE02-A01-I01
+          texto: "Porcentaje de la comunidad alcanzada por la comunicación"
+  OG4-OE03:
+    - id: OG4-OE03-A01
+      texto: "Manual y talleres sobre criterios de jerarquización de RR.HH."
+      indicadores:
+        - id: OG4-OE03-A01-I01
+          texto: "Criterios documentados y encuestas de comprensión"
+  OG4-OE04:
+    - id: OG4-OE04-A01
+      texto: "Comisiones ad-hoc y régimen de dedicación docente progresivo."
+      indicadores:
+        - id: OG4-OE04-A01-I01
+          texto: "Porcentaje de docentes en régimen de dedicación"
+  OG4-OE05:
+    - id: OG4-OE05-A01
+      texto: "Programas de formación continua presencial y virtual con evaluación."
+      indicadores:
+        - id: OG4-OE05-A01-I01
+          texto: "Participación en programas y nivel de habilidades adquiridas"
+  OG4-OE06:
+    - id: OG4-OE06-A01
+      texto: "Revisiones periódicas sistemáticas de políticas de jerarquización y permanencia."
+      indicadores:
+        - id: OG4-OE06-A01-I01
+          texto: "Frecuencia de revisiones y cantidad de ajustes documentados"
+  OG5-OE01:
+    - id: OG5-OE01-A01
+      texto: "Talleres de liderazgo, Consejo Consultivo Estudiantil y mesas de diálogo."
+      indicadores:
+        - id: OG5-OE01-A01-I01
+          texto: "Número de talleres y participación estudiantil"
+  OG5-OE02:
+    - id: OG5-OE02-A01
+      texto: "Fortalecimiento del Centro / Consejo de Graduados y comunicaciones."
+      indicadores:
+        - id: OG5-OE02-A01-I01
+          texto: "Graduados relevados y comunicaciones cursadas"
+  OG5-OE03:
+    - id: OG5-OE03-A01
+      texto: "Participación estudiantil y de graduados en cultura, deporte y extensión."
+      indicadores:
+        - id: OG5-OE03-A01-I01
+          texto: "Actas de Consejo de Extensión / Comité de Investigación con representación estudiantil"
+  OG5-OE04:
+    - id: OG5-OE04-A01
+      texto: "Becas de investigación y proyectos con participación de alumnos y graduados."
+      indicadores:
+        - id: OG5-OE04-A01-I01
+          texto: "Monto de becas y participación en convocatorias"
+  OG5-OE05:
+    - id: OG5-OE05-A01
+      texto: "Centro de Emprendedores: base de datos, consultas y eventos de innovación."
+      indicadores:
+        - id: OG5-OE05-A01-I01
+          texto: "Consultas atendidas y eventos de emprendedurismo"
+  OG5-OE06:
+    - id: OG5-OE06-A01
+      texto: "Plan de tutoría y seguimiento con participación de docentes y graduados."
+      indicadores:
+        - id: OG5-OE06-A01-I01
+          texto: "Porcentaje de docentes/graduados en tutorías y alumnos acompañados"
+  OG6-OE01:
+    - id: OG6-OE01-A01
+      texto: "Programas de formación en valores (diplomaturas, cursos, ciclos de charlas)."
+      indicadores:
+        - id: OG6-OE01-A01-I01
+          texto: "Cantidad de participantes"
+  OG6-OE02:
+    - id: OG6-OE02-A01
+      texto: "Integración de valores en currículo y proyectos por disciplina."
+      indicadores:
+        - id: OG6-OE02-A01-I01
+          texto: "Cursos con enfoque de valores y % de programas con integración"
+  OG6-OE03:
+    - id: OG6-OE03-A01
+      texto: "Celebraciones litúrgicas, retiros y encuentros de reflexión."
+      indicadores:
+        - id: OG6-OE03-A01-I01
+          texto: "Cantidad de eventos religiosos y participación por estamento"
+  OG6-OE04:
+    - id: OG6-OE04-A01
+      texto: "Comité de ética en investigación, jornadas fe-razón, reglamentos y publicaciones."
+      indicadores:
+        - id: OG6-OE04-A01-I01
+          texto: "Iniciativas de diálogo ciencia-fe documentadas"
+  OG6-OE05:
+    - id: OG6-OE05-A01
+      texto: "Ética profesional en carreras, Agenda 2030, sostenibilidad y RSU."
+      indicadores:
+        - id: OG6-OE05-A01-I01
+          texto: "Indicadores de transparencia y evaluación continua de líneas éticas"
